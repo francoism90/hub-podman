@@ -6,7 +6,7 @@ Hub is a video on demand (VOD) media distribution system that allows users to ac
 
 Please browse the following repositiories to learn more:
 
-- [Api](https://github.com/francoism90/hub) - Podman instance
+- [Hub](https://github.com/francoism90/hub) - Podman instance
 - [Api](https://github.com/francoism90/hub-api) - Laravel API backend
 - [App](https://github.com/francoism90/hub-app) - VueJS frontend
 
