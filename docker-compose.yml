@@ -1,0 +1,157 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ./build/app
+      dockerfile: Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    container_name: hub-app
+    depends_on:
+      - mailpit
+      - mariadb
+      - meilisearch
+      - redis
+      - soketi
+    restart: always
+    user: ${UID:-1000}:${GID:-1000}
+    networks:
+      - bridge
+    ports:
+      - 5173:5173
+    volumes:
+      - ./ssl:/ssl:ro,z
+      - ./src:/src:rw,z,U
+      - ./data:/data:rw,z,U
+    secrets:
+      - source: ssl-cert
+        target: cert.pem
+      - source: ssl-key
+        target: key.pem
+      - source: ssl-dhparam
+        target: dhparam.pem
+    x-podman:
+      uidmaps:
+        - "0:1:1"
+        - "${UID:-1000}:0:1"
+      gidmaps:
+        - "0:1:1"
+        - "${GID:-1000}:0:1"
+  nginx:
+    build:
+      context: ./build/nginx
+      dockerfile: Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    container_name: hub-nginx
+    depends_on:
+      - app
+      - soketi
+    restart: always
+    user: ${UID:-1000}:${GID:-1000}
+    working_dir: /src
+    networks:
+      - bridge
+    ports:
+      - 80:8080
+      - 443:4443
+      - 3000:3000
+    volumes:
+      - ./ssl:/ssl:ro,z
+      - ./src:/src:ro,z
+      - ./data:/data:ro,z
+    secrets:
+      - source: ssl-cert
+        target: cert.pem
+      - source: ssl-key
+        target: key.pem
+      - source: ssl-dhparam
+        target: dhparam.pem
+    x-podman:
+      uidmaps:
+        - "0:1:1"
+        - "${UID:-1000}:0:1"
+      gidmaps:
+        - "0:1:1"
+        - "${GID:-1000}:0:1"
+  mariadb:
+    image: mariadb:latest
+    container_name: hub-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    restart: always
+    networks:
+      - bridge
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb:/var/lib/mysql:rw,Z
+  redis:
+    image: redis:latest
+    container_name: hub-redis
+    restart: always
+    networks:
+      - bridge
+    expose:
+      - 6379
+    volumes:
+      - redis:/data:rw,Z
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: hub-meilisearch
+    environment:
+      MEILI_MASTER_KEY: "${MEILI_MASTER_KEY}"
+      MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS:-true}
+      MEILI_ENV: "${MEILI_ENV:-development}"
+    restart: always
+    networks:
+      - bridge
+    ports:
+      - 7700:7700
+    volumes:
+      - meilisearch:/meili_data:rw,Z
+  soketi:
+    image: quay.io/soketi/soketi:latest
+    container_name: hub-soketi
+    environment:
+      DEFAULT_APP_ID: "${SOKETI_APP_ID:-app-id}"
+      DEFAULT_APP_KEY: "${SOKETI_APP_KEY:-app-key}"
+      DEFAULT_APP_SECRET: "${SOKETI_APP_SECRET:-app-secret}"
+    restart: always
+    networks:
+      - bridge
+    ports:
+      - 6001:6001
+      - 9601:9601
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: hub-mailpit
+    restart: always
+    networks:
+      - bridge
+    ports:
+      - 1025:1025
+      - 8025:8025
+secrets:
+  ssl-cert:
+    file: ./ssl/cert.pem
+  ssl-key:
+    file: ./ssl/key.pem
+  ssl-dhparam:
+    file: ./ssl/dhparam.pem
+volumes:
+  mariadb:
+    name: hub-mariadb
+  redis:
+    name: hub-redis
+  meilisearch:
+    name: hub-melisearch
+networks:
+  bridge:
