@@ -4,6 +4,11 @@
 
 Hub is a Video on demand (VOD) media distribution system that allows users to access to videos, television shows and films.
 
+Please browse the following repositiories to learn more, as this is only the Podman instance:
+
+- [Api](https://github.com/francoism90/hub-api)
+- [App](https://github.com/francoism90/hub-app)
+
 ## Prerequisites
 
 - [Podman](https://podman.io/)
@@ -31,9 +36,9 @@ vi .env
 
 > TIP: You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'`
 
-Hub comes with it's own Laravel Sail utility clone '`hub`'.
+Hub comes with it's own Laravel Sail utility clone: `hub`.
 
-It is designed to work with Podman, instead of Docker.
+It is designed to work exclusively with Podman, instead of Docker.
 
 ### Podman
 
