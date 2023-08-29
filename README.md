@@ -9,6 +9,8 @@ Please browse the following repositiories to learn more:
 - [Hub](https://github.com/francoism90/hub) - Podman/Docker instance
 - [Api](https://github.com/francoism90/hub-api) - Laravel App
 
+> NOTE: Hub is unstable and in active development, expect bumps on the road.
+
 ## Prerequisites
 
 > NOTE: See [Docker Compose](https://github.com/francoism90/hub/wiki/Docker-Compose) if only Docker is available.
@@ -17,7 +19,7 @@ Please browse the following repositiories to learn more:
 - [Podman Compose](https://github.com/containers/podman-compose)
 - Running in rootless mode:
   - <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-  - <https://man.archlinux.org/man/podman.1#Rootless_mode>
+  - <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 - [mkcert](https://github.com/FiloSottile/mkcert)
 - DNS-server (recommended) or edit your `hosts` file
 
@@ -97,7 +99,7 @@ hub a migrate --seed
 hub a npm run build
 ```
 
-The Hub instance should be available at [https://hub.test].
+The Hub instance should be available at <https://hub.test>.
 
 ## Interaction
 
