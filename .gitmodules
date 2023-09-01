@@ -1,6 +1,3 @@
 [submodule "src/api"]
 	path = src/api
 	url = https://github.com/francoism90/hub-api.git
-[submodule "src/app"]
-	path = src/app
-	url = https://github.com/francoism90/hub-app.git
