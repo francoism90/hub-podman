@@ -27,14 +27,14 @@ Please browse the following repositiories to learn more:
 
 ### Clone repository
 
-Clone the repository, for example to the Code directory of the home-folder:
+Clone the repository, for example to the Code directory of your home-folder:
 
 ```bash
 cd ~/Code
 git clone --recurse-submodules https://github.com/francoism90/hub.git
 ```
 
-Update the Podman environment settings to your own needs:
+Update the Podman environment settings:
 
 ```bash
 cd ~/Code/hub
@@ -42,25 +42,24 @@ cp .env.example .env
 vi .env
 ```
 
-### DNS records
+### LAN Instance
 
-The following DNS/host-file records should match the machine running the instance:
+> **NOTE:** This is only needed when you want to run Hub on your LAN.
+
+The following DNS/hosts records should match the machine running the instance:
 
 ```md
-192.168.1.100 hub.test
-192.168.1.100 ws.hub.test
+192.168.1.100 hub.test ws.hub.test
 ```
 
-### Local certificate
-
-Create a script to manage your local certificates, e.g. `cert.sh`, and replace `192.168.1.100` with the device's IP-address:
+Create a script to manage your local certificate, e.g. `cert.sh`:
 
 ```bash
 #!/bin/sh
 mkcert -install \
 && mkcert -key-file key.pem -cert-file cert.pem \
   hub.test *.hub.test \
-  192.168.1.100 \
+  localhost \
   127.0.0.1 ::1
 ```
 
@@ -77,7 +76,7 @@ Generate an one-time `dhparam.pem` file:
 openssl dhparam -out dhparam.pem 2048
 ```
 
-Copy the generated files, into the the `~/Code/hub/ssl` folder.
+Copy the generated files, into the `~/Code/hub/ssl` folder.
 
 > **TIP:** You may want to setup [mobile devices](https://github.com/FiloSottile/mkcert#mobile-devices).
 
@@ -103,13 +102,13 @@ The Hub instance should be available at <https://hub.test>.
 
 ## Interaction
 
-> TIP: You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'`
+> **TIP:** You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'`
 
 Hub comes with it's own Laravel Sail utility clone: `hub` (`bin/hub`).
 
-It is designed to work exclusively with Podman.
+> **NOTE:** It is designed to work exclusively with Podman.
 
-### Podman
+### Commands
 
 To build Hub:
 
