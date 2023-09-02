@@ -34,6 +34,13 @@ cd ~/Code
 git clone --recurse-submodules https://github.com/francoism90/hub.git
 ```
 
+If the repository doesn't exists:
+
+```bash
+cd ~/Code/hub/src
+git clone https://github.com/francoism90/hub-api.git api
+```
+
 Update the Podman environment settings:
 
 ```bash
