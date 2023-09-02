@@ -4,12 +4,12 @@
 
 Hub is a video on demand (VOD) media distribution system that allows users to access to videos, television shows and films.
 
+> **NOTE:** See <https://github.com/francoism90/.github/tree/main/hub> for (WIP) screenshots.
+
 Please browse the following repositiories to learn more:
 
 - [Hub](https://github.com/francoism90/hub) - Podman/Docker instance
 - [Api](https://github.com/francoism90/hub-api) - Laravel App
-
-> NOTE: Hub is unstable and in active development, expect bumps on the road.
 
 ## Prerequisites
 
@@ -94,11 +94,27 @@ To start Hub:
 
 ```bash
 hub up -d
+hub composer i
+hub a key:generate
+hub a storage:link
 hub a migrate --seed
 hub a npm run build
+hub a scout:sync
+```
+
+You may need to alter permissions:
+
+```bash
+cd ~/Code/hub
+chcon -Rt container_file_t data/
 ```
 
 The Hub instance should be available at <https://hub.test>.
+
+The following administrator links are available:
+- <https://hub.test/admin>
+- <https://hub.test/horizon>
+- <https://hub.test/telescope>
 
 ## Interaction
 
