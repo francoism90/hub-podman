@@ -1,4 +1,4 @@
-FROM php:8.2.8-fpm-alpine
+FROM php:8.2.10-fpm-alpine
 
 ARG UID=1000
 ARG GID=$UID
@@ -110,12 +110,10 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && pecl install apcu \
     && pecl install imagick \
     && pecl install redis \
-    && pecl install swoole \
     && docker-php-ext-enable apcu \
     && docker-php-ext-enable imagick \
     && docker-php-ext-enable opcache \
     && docker-php-ext-enable redis \
-    && docker-php-ext-enable swoole \
     && apk del .build-deps
 
 RUN setcap "cap_net_bind_service=+ep" $(which php) \

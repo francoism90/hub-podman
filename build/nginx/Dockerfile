@@ -75,7 +75,7 @@ RUN mkdir -p /usr/local/src && cd /usr/local/src \
     && CONFARGS=$(nginx -V 2>&1 | sed -n -e 's/^.*arguments: //p')
 
 RUN cd /usr/local/src \
-    && git clone --depth 1 https://github.com/google/ngx_brotli.git \
+    && git clone --recursive --depth 1 https://github.com/google/ngx_brotli.git \
     && MODULEDIR=$(pwd)/ngx_brotli \
     && cd /usr/local/src/nginx \
     && ./configure --with-compat $CONFARGS --add-dynamic-module=$MODULEDIR --with-cc-opt="-O3" \
