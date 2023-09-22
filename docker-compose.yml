@@ -16,6 +16,7 @@ services:
       - redis
       - soketi
     restart: always
+    userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
     networks:
       - bridge
@@ -51,6 +52,7 @@ services:
       - app
       - soketi
     restart: always
+    userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
     working_dir: /src
     networks:
