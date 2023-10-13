@@ -48,7 +48,7 @@ RUN usermod --non-unique --uid $UID nginx \
 RUN apk add --no-cache --virtual .run-deps \
     openssl \
     brotli \
-    ffmpeg4-dev \
+    ffmpeg-dev \
     fdk-aac \
     gsm \
     libass \
