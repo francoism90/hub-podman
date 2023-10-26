@@ -10,7 +10,6 @@ RUN apk update --no-cache \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     shadow \
-    git \
     gcc \
     libc-dev \
     make \
@@ -47,6 +46,7 @@ RUN usermod --non-unique --uid $UID www-data \
 
 RUN apk add --no-cache --virtual .run-deps \
     openssl \
+    git \
     brotli \
     ffmpeg \
     fdk-aac \
@@ -57,6 +57,7 @@ RUN apk add --no-cache --virtual .run-deps \
     imagemagick \
     jpegoptim \
     libass \
+    libavif-bin \
     libcap \
     libjpeg \
     libjpeg-turbo \
@@ -86,6 +87,8 @@ RUN apk add --no-cache --virtual .run-deps \
     x265 \
     xvidcore \
     zlib
+
+RUN npm install -g npm-check-updates svgo
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i "s/error_reporting = .*/error_reporting = E_ALL/" "$PHP_INI_DIR/php.ini" \
