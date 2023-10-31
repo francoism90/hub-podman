@@ -33,13 +33,6 @@ services:
         target: key.pem
       - source: ssl-dhparam
         target: dhparam.pem
-    x-podman:
-      uidmaps:
-        - "0:1:1"
-        - "${UID:-1000}:0:1"
-      gidmaps:
-        - "0:1:1"
-        - "${GID:-1000}:0:1"
   nginx:
     build:
       context: ./build/nginx
@@ -72,13 +65,6 @@ services:
         target: key.pem
       - source: ssl-dhparam
         target: dhparam.pem
-    x-podman:
-      uidmaps:
-        - "0:1:1"
-        - "${UID:-1000}:0:1"
-      gidmaps:
-        - "0:1:1"
-        - "${GID:-1000}:0:1"
   mariadb:
     image: mariadb:latest
     container_name: hub-mariadb
