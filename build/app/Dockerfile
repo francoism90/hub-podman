@@ -110,10 +110,8 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && docker-php-ext-install -j$(nproc) pdo_sqlite \
     && docker-php-ext-install -j$(nproc) simplexml \
     && docker-php-ext-install -j$(nproc) zip \
-    && pecl install apcu \
     && pecl install imagick \
     && pecl install redis \
-    && docker-php-ext-enable apcu \
     && docker-php-ext-enable imagick \
     && docker-php-ext-enable opcache \
     && docker-php-ext-enable redis \
