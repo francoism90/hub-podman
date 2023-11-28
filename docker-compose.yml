@@ -113,20 +113,20 @@ services:
       DEFAULT_APP_KEY: "${SOKETI_APP_KEY:-app-key}"
       DEFAULT_APP_SECRET: "${SOKETI_APP_SECRET:-app-secret}"
     restart: always
-    networks:
-      - hub
     ports:
       - "${PUSHER_PORT:-6001}:6001"
       - "${PUSHER_METRICS_PORT:-9601}:9601"
+    networks:
+      - hub
   mailpit:
     image: axllent/mailpit:latest
     container_name: hub-mailpit
     restart: always
-    networks:
-      - hub
     ports:
       - "${FORWARD_MAILPIT_PORT:-1025}:1025"
       - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
+    networks:
+      - hub
 secrets:
   ssl-cert:
     file: ./ssl/cert.pem
