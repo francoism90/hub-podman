@@ -67,10 +67,7 @@ services:
       - source: ssl-dhparam
         target: dhparam.pem
     networks:
-      bridge:
-        aliases:
-          - hub
-          - hub.test
+      - bridge
   mariadb:
     image: mariadb:latest
     container_name: hub-mariadb
