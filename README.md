@@ -41,12 +41,13 @@ cd ~/Code/hub/src
 git clone https://github.com/francoism90/hub-api.git api
 ```
 
-Update the Podman environment settings:
+To build Hub:
 
 ```bash
 cd ~/Code/hub
 cp .env.example .env
 vi .env
+hub build --no-cache
 ```
 
 ### LAN Instance
@@ -119,6 +120,7 @@ chcon -Rt container_file_t data/
 The Hub instance should be available at <https://hub.test>.
 
 The following administrator links are available:
+
 - <https://hub.test/admin>
 - <https://hub.test/horizon>
 - <https://hub.test/telescope>

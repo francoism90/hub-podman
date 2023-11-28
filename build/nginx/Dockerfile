@@ -3,6 +3,8 @@ FROM nginxinc/nginx-unprivileged:mainline-alpine
 ARG UID=1000
 ARG GID=$UID
 
+ENV TZ=UTC
+
 USER root
 
 RUN apk update --no-cache \
@@ -42,9 +44,6 @@ RUN apk add --no-cache --virtual .build-deps \
     xvidcore-dev \
     zlib-dev
 
-RUN usermod --non-unique --uid $UID nginx \
-    && groupmod --non-unique --gid $GID nginx
-
 RUN apk add --no-cache --virtual .run-deps \
     openssl \
     brotli \
@@ -61,12 +60,19 @@ RUN apk add --no-cache --virtual .run-deps \
     libvpx \
     rtmpdump \
     speex \
+    tzdata \
     unzip \
     x264 \
     x265 \
     xvidcore
 
-RUN mkdir -p /usr/local/src && cd /usr/local/src \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN usermod --non-unique --uid $UID nginx \
+    && groupmod --non-unique --gid $GID nginx
+
+RUN mkdir -p /usr/local/src && rm -rf /usr/local/src/* \
+    && cd /usr/local/src \
     && wget "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" -O nginx.tar.gz \
     && set -x \
     && tar xzvf nginx.tar.gz \
@@ -92,6 +98,8 @@ RUN cd /usr/local/src \
     && make install
 
 RUN apk del .build-deps
+
+USER nginx
 
 COPY runtimes/. /etc/nginx
 
