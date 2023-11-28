@@ -2,19 +2,20 @@
 
 ## Introduction
 
-Hub is a video on demand (VOD) media distribution system that allows users to access to videos, television shows and films.
+Hub is a video on demand (VOD) media distribution system that allows users to store videos.
 
 > **NOTE:** See <https://github.com/francoism90/.github/tree/main/hub> for (WIP) screenshots.
 
-Please browse the following repositiories to learn more:
+Please checkout the following repositiories to learn more:
 
 - [Hub](https://github.com/francoism90/hub) - Podman/Docker instance
-- [Api](https://github.com/francoism90/hub-api) - Laravel App + API
+- [Api](https://github.com/francoism90/hub-api) - Laravel Livewire + API
 
 ## Prerequisites
 
-> NOTE: See [Docker Compose](https://github.com/francoism90/hub/wiki/Docker-Compose) if only Docker is available.
+> NOTE: Docker should work, but has been untested.
 
+- Linux (WSL2 has been untested)
 - [Podman](https://podman.io/) with SELinux support
 - [Podman Compose](https://github.com/containers/podman-compose)
 - Running in rootless mode:
@@ -23,41 +24,56 @@ Please browse the following repositiories to learn more:
 - [mkcert](https://github.com/FiloSottile/mkcert)
 - DNS-server (recommended) or edit your `hosts` file
 
+## Interaction
+
+Hub comes with it's own Laravel Sail utility clone: `hub` (`bin/hub`).
+
+> **TIP:** You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'` to your `~/.zshrc`
+
+It is designed to work exclusively with Podman and Podman Compose.
+
 ## Installation
 
 ### Clone repository
 
-Clone the repository, for example to the Code directory of your home-folder:
+Clone the repository, for example to `/home/<user>/Code/hub`:
 
 ```bash
 cd ~/Code
 git clone --recurse-submodules https://github.com/francoism90/hub.git
 ```
 
-If the repository doesn't exists:
-
-```bash
-cd ~/Code/hub/src
-git clone https://github.com/francoism90/hub-api.git api
-```
-
-Update the Podman environment settings:
+If the API repository doesn't exists (yet):
 
 ```bash
 cd ~/Code/hub
+git clone https://github.com/francoism90/hub-api.git src/api
+```
+
+Configure the Hub services:
+
+```bash
 cp .env.example .env
 vi .env
 ```
 
-### LAN Instance
+If you only want to access Hub on your local machine, add the following `hosts` entry:
 
-> **NOTE:** This is only needed when you want to run Hub on your LAN.
+```md
+127.0.0.1 hub.test ws.hub.test
+```
 
-The following DNS/hosts records should match the machine running the instance:
+The following DNS-records should be added of the machine running the instance if you want to expose it on your LAN, e.g.:
 
 ```md
 192.168.1.100 hub.test ws.hub.test
 ```
+
+### Create certificate
+
+To protect and use the hub instance, it is required to create a certificate.
+
+> **NOTE:** This is not required when using your own domain and issuer.
 
 Create a script to manage your local certificate, e.g. `cert.sh`:
 
@@ -83,7 +99,7 @@ Generate an one-time `dhparam.pem` file:
 openssl dhparam -out dhparam.pem 2048
 ```
 
-Copy the generated files, into the `~/Code/hub/ssl` folder.
+Copy the generated files or place your own certificate, into the `~/Code/hub/ssl` folder.
 
 > **TIP:** You may want to setup [mobile devices](https://github.com/FiloSottile/mkcert#mobile-devices).
 
@@ -95,6 +111,12 @@ Update the Laravel environment settings to your own needs:
 cd ~/Code/hub/src/api
 cp .env.example .env
 vi .env
+```
+
+Build Hub using:
+
+```bash
+hub build --no-cache
 ```
 
 To start Hub:
@@ -109,7 +131,7 @@ hub a npm run build
 hub a scout:sync
 ```
 
-You may need to alter permissions:
+You may need to alter permissions when using SELinux:
 
 ```bash
 cd ~/Code/hub
@@ -119,24 +141,16 @@ chcon -Rt container_file_t data/
 The Hub instance should be available at <https://hub.test>.
 
 The following administrator links are available:
-- <https://hub.test/admin>
-- <https://hub.test/horizon>
-- <https://hub.test/telescope>
 
-## Interaction
+- <https://hub.test/admin> - Filament Panel
+- <https://hub.test/horizon> - Laravel Horizon (super-admin only)
+- <https://hub.test/telescope> - Laravel Telescope (super-admin only)
 
-> **TIP:** You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'`
-
-Hub comes with it's own Laravel Sail utility clone: `hub` (`bin/hub`).
-
-> **NOTE:** It is designed to work exclusively with Podman.
-
-### Commands
+### Cheat sheet
 
 To build Hub:
 
 ```bash
-cd ~/Code/hub
 hub build --no-cache
 ```
 
@@ -162,4 +176,12 @@ hub npm run dev
 hub npm run build
 hub shell
 hub help
+```
+
+You may want to use a different mount-point for media storage, without adjusting `docker-compose.yml`:
+
+```bash
+sudo mount --bind /mnt/data/videos/media ~/Code/hub/data/media -o x-gvfs-hide
+podman system migrate
+hub up -d
 ```
