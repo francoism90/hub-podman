@@ -99,8 +99,6 @@ RUN cd /usr/local/src \
 
 RUN apk del .build-deps
 
-USER nginx
-
 COPY runtimes/. /etc/nginx
 
 STOPSIGNAL SIGQUIT
@@ -108,5 +106,7 @@ STOPSIGNAL SIGQUIT
 EXPOSE 1936
 EXPOSE 8080
 EXPOSE 4443
+
+USER $UID
 
 CMD ["nginx", "-g", "daemon off;"]

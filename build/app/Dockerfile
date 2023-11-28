@@ -106,16 +106,19 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && docker-php-ext-install -j$(nproc) fileinfo \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) mbstring \
+    && docker-php-ext-install -j$(nproc) mysqli \
     && docker-php-ext-install -j$(nproc) pcntl \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) pdo_sqlite \
-    && docker-php-ext-install -j$(nproc) simplexml \
+    && docker-php-ext-install -j$(nproc) soap \
+    && docker-php-ext-install -j$(nproc) xml \
     && docker-php-ext-install -j$(nproc) zip \
     && pecl install igbinary \
     && pecl install imagick \
+    && pecl install msgpack \
     && pecl install redis \
     && docker-php-ext-enable igbinary \
     && docker-php-ext-enable imagick \
+    && docker-php-ext-enable msgpack \
     && docker-php-ext-enable opcache \
     && docker-php-ext-enable redis \
     && apk del .build-deps
@@ -135,5 +138,7 @@ STOPSIGNAL SIGQUIT
 EXPOSE 5173
 EXPOSE 8000
 EXPOSE 9000
+
+USER $UID
 
 CMD ["supervisord"]
