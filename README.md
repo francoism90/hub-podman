@@ -26,9 +26,9 @@ Please checkout the following repositiories to learn more:
 
 ## Interaction
 
-> **TIP:** You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'` to your `~/.zshrc`
-
 Hub comes with it's own Laravel Sail utility clone: `hub` (`bin/hub`).
+
+> **TIP:** You may want to add the following alias `alias hub='[ -f hub ] && sh hub || sh bin/hub'` to your `~/.zshrc`
 
 It is designed to work exclusively with Podman and Podman Compose.
 
