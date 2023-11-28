@@ -18,8 +18,6 @@ services:
     restart: always
     userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
-    ports:
-      - 5173:5173
     volumes:
       - ./ssl:/ssl:ro,z
       - ./src:/src:rw,z,U
@@ -32,7 +30,7 @@ services:
       - source: ssl-dhparam
         target: dhparam.pem
     networks:
-      - bridge
+      - hub
   nginx:
     build:
       context: ./build/nginx
@@ -47,14 +45,13 @@ services:
     restart: always
     userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
-    working_dir: /src
     hostname: hub.test
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - 80:8080
-      - 443:4443
-      - 3000:3000
+      - "${HTTP_PORT:-80}:8080"
+      - "${HTTPS_PORT:-443}:4443"
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
     volumes:
       - ./ssl:/ssl:ro,z
       - ./src:/src:ro,z
@@ -67,7 +64,7 @@ services:
       - source: ssl-dhparam
         target: dhparam.pem
     networks:
-      - bridge
+      - hub
   mariadb:
     image: mariadb:latest
     container_name: hub-mariadb
@@ -79,21 +76,21 @@ services:
       MYSQL_PASSWORD: "${DB_PASSWORD}"
     restart: always
     networks:
-      - bridge
+      - hub
     ports:
-      - 3306:3306
+      - "${FORWARD_DB_PORT:-3306}:3306"
     volumes:
       - mariadb:/var/lib/mysql:rw,Z
   redis:
     image: redis:latest
     container_name: hub-redis
     restart: always
-    networks:
-      - bridge
     expose:
-      - 6379
+      - "${FORWARD_REDIS_PORT:-6379}"
     volumes:
       - redis:/data:rw,Z
+    networks:
+      - hub
   meilisearch:
     image: getmeili/meilisearch:latest
     container_name: hub-meilisearch
@@ -102,12 +99,12 @@ services:
       MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS:-true}
       MEILI_ENV: "${MEILI_ENV:-development}"
     restart: always
-    networks:
-      - bridge
     ports:
-      - 7700:7700
+      - "${FORWARD_MEILISEARCH_PORT:-7700}:7700"
     volumes:
       - meilisearch:/meili_data:rw,Z
+    networks:
+      - hub
   soketi:
     image: quay.io/soketi/soketi:latest
     container_name: hub-soketi
@@ -117,19 +114,19 @@ services:
       DEFAULT_APP_SECRET: "${SOKETI_APP_SECRET:-app-secret}"
     restart: always
     networks:
-      - bridge
+      - hub
     ports:
-      - 6001:6001
-      - 9601:9601
+      - "${PUSHER_PORT:-6001}:6001"
+      - "${PUSHER_METRICS_PORT:-9601}:9601"
   mailpit:
     image: axllent/mailpit:latest
     container_name: hub-mailpit
     restart: always
     networks:
-      - bridge
+      - hub
     ports:
-      - 1025:1025
-      - 8025:8025
+      - "${FORWARD_MAILPIT_PORT:-1025}:1025"
+      - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
 secrets:
   ssl-cert:
     file: ./ssl/cert.pem
@@ -145,4 +142,5 @@ volumes:
   meilisearch:
     name: hub-melisearch
 networks:
-  bridge:
+  hub:
+    driver: bridge
