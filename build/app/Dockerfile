@@ -98,35 +98,34 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && sed -i "s/upload_max_filesize = .*/upload_max_filesize = 100M/" "$PHP_INI_DIR/php.ini" \
     && sed -i "s/post_max_size = .*/post_max_size = 100M/" "$PHP_INI_DIR/php.ini" \
     && sed -i "s/;date.timezone.*/date.timezone = UTC/" "$PHP_INI_DIR/php.ini" \
-    && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
-    && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install -j$(nproc) bcmath \
-    && docker-php-ext-install -j$(nproc) exif \
-    && docker-php-ext-install -j$(nproc) fileinfo \
-    && docker-php-ext-install -j$(nproc) intl \
-    && docker-php-ext-install -j$(nproc) mbstring \
-    && docker-php-ext-install -j$(nproc) mysqli \
-    && docker-php-ext-install -j$(nproc) pcntl \
-    && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) soap \
-    && docker-php-ext-install -j$(nproc) xml \
-    && docker-php-ext-install -j$(nproc) zip \
-    && pecl install igbinary \
-    && pecl install imagick \
-    && pecl install msgpack \
-    && pecl install redis \
-    && docker-php-ext-enable igbinary \
-    && docker-php-ext-enable imagick \
-    && docker-php-ext-enable msgpack \
-    && docker-php-ext-enable opcache \
-    && docker-php-ext-enable redis \
-    && apk del .build-deps
+    && curl -sSLf \
+    -o /usr/local/bin/install-php-extensions \
+    https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+    && chmod +x /usr/local/bin/install-php-extensions
+
+RUN install-php-extensions \
+    @composer \
+    bcmath \
+    exif \
+    gd \
+    igbinary \
+    imagick \
+    intl \
+    msgpack \
+    mysqli \
+    opcache \
+    pcntl \
+    pdo_mysql \
+    redis \
+    soap \
+    zip
 
 RUN npm install -g svgo
 
 RUN setcap "cap_net_bind_service=+ep" $(which php) \
     && setcap "cap_net_bind_service=+ep" $(which php-fpm)
+
+RUN apk del .build-deps
 
 COPY runtimes/supervisord.conf /etc/supervisord.conf
 COPY runtimes/www.conf /usr/local/etc/php-fpm.d/www.conf
