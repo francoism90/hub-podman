@@ -10,81 +10,23 @@ RUN apk update --no-cache \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     shadow \
-    gcc \
-    libc-dev \
-    make \
-    findutils \
-    alpine-sdk \
-    linux-headers \
-    brotli-dev \
-    ffmpeg-dev \
-    fdk-aac-dev \
-    freetype-dev \
-    icu-dev \
-    imagemagick-dev \
-    libass-dev \
-    libdrm-dev \
-    libjpeg-turbo-dev \
-    libogg-dev \
-    libpng-dev \
-    libtheora-dev \
-    libwebp-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libzip-dev \
-    linux-headers \
-    oniguruma-dev \
-    openssl-dev \
-    pcre2-dev \
-    perl-dev \
-    rtmpdump-dev \
-    sqlite-dev \
-    zlib-dev
+    gcc
 
 RUN apk add --no-cache --virtual .run-deps \
     openssl \
     git \
-    brotli \
     ffmpeg \
     fdk-aac \
-    freetype \
-    gifsicle \
-    gsm \
-    icu \
-    imagemagick \
     jpegoptim \
-    libass \
-    libavif \
-    libcap \
-    libjpeg \
-    libjpeg-turbo \
-    libogg \
-    libpng \
-    libtheora \
-    libvorbis \
-    libvpx \
-    libwebp \
-    libxml2 \
-    libxslt \
-    libzip \
     mariadb-client \
-    nodejs \
     npm \
-    oniguruma \
     optipng \
-    pcre2 \
-    perl \
     pngquant \
-    rtmpdump \
-    speex \
-    sqlite \
     supervisor \
     tzdata \
-    unzip \
     x264 \
     x265 \
-    xvidcore \
-    zlib
+    xvidcore
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
