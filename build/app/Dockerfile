@@ -10,23 +10,40 @@ RUN apk update --no-cache \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     shadow \
-    gcc
+    alpine-sdk \
+    curl \
+    unzip
 
 RUN apk add --no-cache --virtual .run-deps \
-    openssl \
     git \
+    brotli \
     ffmpeg \
-    fdk-aac \
+    tzdata \
+    libcap \
+    opencore-amr \
     jpegoptim \
     mariadb-client \
     npm \
     optipng \
     pngquant \
     supervisor \
-    tzdata \
+    libass \
+    gsm \
+    lame \
+    speex \
+    libtheora \
+    libogg \
+    libwebp \
+    libva \
+    libvpx \
+    xvidcore \
+    numactl \
+    libvdpau \
+    fdk-aac \
+    libvorbis \
+    openjpeg \
     x264 \
-    x265 \
-    xvidcore
+    x265
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 

@@ -12,59 +12,45 @@ RUN apk update --no-cache \
 
 RUN apk add --no-cache --virtual .build-deps \
     shadow \
-    git \
-    gcc \
-    libc-dev \
-    make \
-    findutils \
     alpine-sdk \
+    clang \
     linux-headers \
-    bash \
-    brotli-dev \
-    fdk-aac-dev \
-    gsm-dev \
-    libass-dev \
-    libdrm-dev \
-    libjpeg-turbo-dev \
-    libogg-dev \
-    libpng-dev \
-    libtheora-dev \
-    libva-dev \
-    libvorbis-dev \
-    libvpx-dev \
-    libwebp-dev \
-    libxslt-dev \
-    openssl-dev \
-    pcre2-dev \
-    perl-dev \
-    rtmpdump-dev \
-    speex-dev \
-    x264-dev \
-    x265-dev \
-    xvidcore-dev \
-    zlib-dev
+    python3 \
+    curl \
+    unzip
 
 RUN apk add --no-cache --virtual .run-deps \
-    openssl \
-    brotli \
+    openssl-dev \
+    brotli-dev \
+    pcre2-dev \
+    libxml2-dev \
     ffmpeg-dev \
     fdk-aac \
+    freetype \
+    fribidi \
+    gmp \
+    gnu-libiconv \
     gsm \
+    jpeg \
+    lame \
     libass \
-    libjpeg \
-    libjpeg-turbo \
+    libmatroska \
     libogg \
     libtheora \
+    libva \
+    libvdpau \
     libvorbis \
-    libwebp \
     libvpx \
-    rtmpdump \
+    libwebp \
+    numactl \
+    opencore-amr \
+    openjpeg \
     speex \
     tzdata \
-    unzip \
     x264 \
     x265 \
-    xvidcore
+    xvidcore \
+    zlib
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -93,7 +79,7 @@ RUN cd /usr/local/src \
     && MODULEDIR=$(pwd)/nginx-vod-module \
     && cd /usr/local/src/nginx \
     && sed -i "s/\/\/ XXXXX add //g" "$MODULEDIR/ngx_http_vod_module.c" \
-    && ./configure --with-compat $CONFARGS --add-dynamic-module=$MODULEDIR --with-file-aio --with-threads --with-cc-opt="-O3" \
+    && ./configure --with-compat $CONFARGS --add-dynamic-module=$MODULEDIR --with-file-aio --with-threads --with-cc-opt="-O3 -mpopcnt" \
     && make \
     && make install
 
