@@ -34,7 +34,6 @@ RUN apk add --no-cache --virtual .run-deps \
     jpeg \
     lame \
     libass \
-    libmatroska \
     libogg \
     libtheora \
     libva \
@@ -78,7 +77,6 @@ RUN cd /usr/local/src \
     && git clone --depth 1 https://github.com/kaltura/nginx-vod-module.git \
     && MODULEDIR=$(pwd)/nginx-vod-module \
     && cd /usr/local/src/nginx \
-    && sed -i "s/\/\/ XXXXX add //g" "$MODULEDIR/ngx_http_vod_module.c" \
     && ./configure --with-compat $CONFARGS --add-dynamic-module=$MODULEDIR --with-file-aio --with-threads --with-cc-opt="-O3 -mpopcnt" \
     && make \
     && make install
