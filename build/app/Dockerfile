@@ -89,7 +89,7 @@ RUN apk del .build-deps
 COPY runtimes/supervisord.conf /etc/supervisord.conf
 COPY runtimes/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-WORKDIR /src/api
+WORKDIR /app
 
 STOPSIGNAL SIGQUIT
 

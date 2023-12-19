@@ -22,7 +22,7 @@ services:
       - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
     volumes:
       - ./ssl:/ssl:ro,z
-      - ./src:/src:rw,z,U
+      - ./app:/app:rw,z,U
       - ./data:/data:rw,z,U
     secrets:
       - source: ssl-cert
@@ -55,7 +55,7 @@ services:
       - "${HTTPS_PORT:-443}:4443"
     volumes:
       - ./ssl:/ssl:ro,z
-      - ./src:/src:ro,z
+      - ./app:/app:ro,z
       - ./data:/data:ro,z
     secrets:
       - source: ssl-cert

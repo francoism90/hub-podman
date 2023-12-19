@@ -47,7 +47,7 @@ If the API repository doesn't exists (yet):
 
 ```bash
 cd ~/Code/hub
-git clone https://github.com/francoism90/hub-api.git src/api
+git clone https://github.com/francoism90/hub-api.git app
 ```
 
 Configure the Hub services:
@@ -108,7 +108,7 @@ Copy the generated files or place your own certificate, into the `~/Code/hub/ssl
 Update the Laravel environment settings to your own needs:
 
 ```bash
-cd ~/Code/hub/src/api
+cd ~/Code/hub/app
 cp .env.example .env
 vi .env
 ```
