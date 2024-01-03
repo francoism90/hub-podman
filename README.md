@@ -40,7 +40,7 @@ Clone the repository, for example to `/home/<user>/Code/hub`:
 
 ```bash
 cd ~/Code
-git clone --recurse-submodules https://github.com/francoism90/hub-podman.git
+git clone --recurse-submodules https://github.com/francoism90/hub-podman.git hub
 ```
 
 If the app instance doesn't exists (yet):
