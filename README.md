@@ -1,4 +1,4 @@
-# Hub
+# Hub (Podman)
 
 ## Introduction
 
@@ -8,8 +8,8 @@ Hub is a video on demand (VOD) media distribution system that allows users to st
 
 Please checkout the following repositiories to learn more:
 
-- [Hub](https://github.com/francoism90/hub) - Podman/Docker instance
-- [Api](https://github.com/francoism90/hub-api) - Laravel Livewire + API
+- [Hub](https://github.com/francoism90/hub) - Laravel Livewire + API
+- [Podman](https://github.com/francoism90/hub-podman) - Podman/Docker instance
 
 ## Prerequisites
 
@@ -40,14 +40,14 @@ Clone the repository, for example to `/home/<user>/Code/hub`:
 
 ```bash
 cd ~/Code
-git clone --recurse-submodules https://github.com/francoism90/hub.git
+git clone --recurse-submodules https://github.com/francoism90/hub-podman.git
 ```
 
-If the API repository doesn't exists (yet):
+If the app instance doesn't exists (yet):
 
 ```bash
 cd ~/Code/hub
-git clone https://github.com/francoism90/hub-api.git app
+git clone https://github.com/francoism90/hub.git app
 ```
 
 Configure the Hub services:
