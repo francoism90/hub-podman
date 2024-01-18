@@ -1,4 +1,4 @@
-FROM php:8.2.13-fpm-alpine
+FROM php:8.3.1-fpm-alpine
 
 ARG UID=1000
 ARG GID=$UID
@@ -67,8 +67,8 @@ RUN install-php-extensions \
     bcmath \
     exif \
     gd \
+    gettext \
     igbinary \
-    imagick \
     intl \
     msgpack \
     mysqli \
