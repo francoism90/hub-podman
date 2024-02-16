@@ -60,13 +60,13 @@ vi .env
 If you only want to access Hub on your local machine, add the following `hosts` entry:
 
 ```md
-127.0.0.1 hub.test ws.hub.test
+127.0.0.1 hub.lan ws.hub.lan
 ```
 
 The following DNS-records should be added of the machine running the instance if you want to expose it on your LAN, e.g.:
 
 ```md
-192.168.1.100 hub.test ws.hub.test
+192.168.1.100 hub.lan ws.hub.lan
 ```
 
 ### Create certificate
@@ -81,7 +81,7 @@ Create a script to manage your local certificate, e.g. `cert.sh`:
 #!/bin/sh
 mkcert -install \
 && mkcert -key-file key.pem -cert-file cert.pem \
-  hub.test *.hub.test \
+  hub.lan *.hub.lan \
   localhost \
   127.0.0.1 ::1
 ```
@@ -138,13 +138,13 @@ cd ~/Code/hub
 chcon -Rt container_file_t data/
 ```
 
-The Hub instance should be available at <https://hub.test>.
+The Hub instance should be available at <https://hub.lan>.
 
 The following administrator links are available:
 
-- <https://hub.test/admin> - Filament Panel
-- <https://hub.test/horizon> - Laravel Horizon (super-admin only)
-- <https://hub.test/telescope> - Laravel Telescope (super-admin only)
+- <https://hub.lan/admin> - Filament Panel
+- <https://hub.lan/horizon> - Laravel Horizon (super-admin only)
+- <https://hub.lan/telescope> - Laravel Telescope (super-admin only)
 
 ### Cheat sheet
 
