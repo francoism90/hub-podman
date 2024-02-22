@@ -70,6 +70,7 @@ services:
     image: mariadb:latest
     container_name: hub-mariadb
     environment:
+      MARIADB_AUTO_UPGRADE: ${MARIADB_AUTO_UPGRADE:-true}
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: "${DB_DATABASE}"
