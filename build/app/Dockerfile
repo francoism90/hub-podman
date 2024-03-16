@@ -65,6 +65,7 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
 RUN install-php-extensions \
     @composer \
     bcmath \
+    event \
     exif \
     gd \
     gettext \
@@ -94,7 +95,7 @@ WORKDIR /app
 STOPSIGNAL SIGQUIT
 
 EXPOSE 5173
-EXPOSE 8000
+EXPOSE 6001
 EXPOSE 9000
 
 USER $UID

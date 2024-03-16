@@ -14,7 +14,6 @@ services:
       - mariadb
       - meilisearch
       - redis
-      - soketi
     restart: always
     userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
@@ -105,19 +104,6 @@ services:
       - "${FORWARD_MEILISEARCH_PORT:-7700}:7700"
     volumes:
       - meilisearch:/meili_data:rw,Z
-    networks:
-      - hub
-  soketi:
-    image: quay.io/soketi/soketi:latest
-    container_name: hub-soketi
-    environment:
-      DEFAULT_APP_ID: "${SOKETI_APP_ID:-app-id}"
-      DEFAULT_APP_KEY: "${SOKETI_APP_KEY:-app-key}"
-      DEFAULT_APP_SECRET: "${SOKETI_APP_SECRET:-app-secret}"
-    restart: always
-    ports:
-      - "${PUSHER_PORT:-6001}:6001"
-      - "${PUSHER_METRICS_PORT:-9601}:9601"
     networks:
       - hub
   mailpit:
