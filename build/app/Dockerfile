@@ -1,4 +1,4 @@
-FROM php:8.3.3-fpm-alpine
+FROM php:8.3.4-fpm-alpine
 
 ARG UID=1000
 ARG GID=$UID
@@ -10,9 +10,7 @@ RUN apk update --no-cache \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     shadow \
-    alpine-sdk \
-    curl \
-    unzip
+    alpine-sdk
 
 RUN apk add --no-cache --virtual .run-deps \
     git \
@@ -20,6 +18,8 @@ RUN apk add --no-cache --virtual .run-deps \
     ffmpeg \
     tzdata \
     libcap \
+    curl \
+    unzip \
     opencore-amr \
     jpegoptim \
     mariadb-client \
