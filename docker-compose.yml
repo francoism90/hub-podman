@@ -42,7 +42,6 @@ services:
     container_name: hub-nginx
     depends_on:
       - app
-      - soketi
     restart: always
     userns_mode: keep-id
     user: ${UID:-1000}:${GID:-1000}
